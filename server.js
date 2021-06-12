@@ -38,20 +38,31 @@ io.on('connection', (socket)=>{
 
     // join the user
     socket.on('join', (userid)=>{
+        console.log('User Joining id: ', userid)
         socket.join(userid)
     })
+
+
+    // emit accepted offer to sender
+    socket.on('accepted-call-offer', (data)=>{
+        console.log('Call Accepted', data)
+        io.to(data.sender).emit('call-offer-accepted', data)
+    })
+
+    // emit rejected offer to sender
+    socket.on('rejected-call-offer', (data)=>{
+        console.log('Rejected Call ', data)
+        io.to(data.sender).emit('call-offer-rejected', data)
+    })
+
 
 })
 
 
 /////////////// event listners ////////////////////
 eventEmitter.on('send-call-offer', (data)=>{
-    
+
     // emitting event to reciever
     io.to(data.receiver).emit('receive-call-offer', data)
-
-    /**
-     * TODO listen this event on client side
-     */
 
 })

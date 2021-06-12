@@ -6,23 +6,22 @@ const call = express.Router()
 //verify user
 //call.use(verifyAccessToken())
 
-//capture io object 
 let socket
 const callService = require('../../services/call/call.service')
 
 call.get('/', (req, res, next) => {
-    let sender = '1234'
-    let receiver = '2334'
+
+    
+    let sender = 'shivansh'
+    let receiver = 'karan'
     console.log('Call Service in Action')
 
-    // emit call event
-    const eventEmitter = req.app.eventEmitter
+    // global event emitter
+    const eventEmitter = req.app.get('eventEmitter')
+
+    // make a call offer
     eventEmitter.emit('send-call-offer', {sender: sender, receiver: receiver})
     
-    
-    // sending call
-    //callService(socket, sender, receiver)
-
     res.send('new call')
 })
 
