@@ -1,8 +1,9 @@
 const express = require('express')
 const auth = express.Router()
 const createError = require('http-errors')
-const firebase = require("firebase")
-require("firebase/auth")
+const { db, firebaseauth } = require("../../setup/firebase/firebase.setup.js")
+
+
 
 auth.post("/login", (req, res, next) => {
 
@@ -10,7 +11,7 @@ auth.post("/login", (req, res, next) => {
         const { email, password } = req.body;
         if (!email || !password) throw createError.BadRequest('Bad Request')
 
-        firebase.auth().signInWithEmailAndPassword(email, password)
+        firebaseauth.signInWithEmailAndPassword(email, password)
             .then((userCredential) => {
                 
                 let { uid, refreshToken } = userCredential.user
@@ -44,9 +45,15 @@ auth.post("/register", async (req, res, next) => {
         if (!email || !password) throw createError.BadRequest('Bad Request')
 
         // attempt to create user account with given email and password
-        firebase.auth().createUserWithEmailAndPassword(email, password)
-            .then((userCredential) => {
+        firebaseauth.createUserWithEmailAndPassword(email, password)
+            .then(async (userCredential) => {
                 let { uid, refreshToken } = userCredential.user
+                
+                //save uid and users email to users collection in firestore
+                await db.collection('users').doc(uid).set({
+                    email: email
+                });
+
                 
                 /**
                  * uid - userid
