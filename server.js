@@ -1,20 +1,48 @@
 const express = require('express')
 const app = express()
+const bodyparser = require('body-parser')
 const Emitter = require('events')
 
 // Event emitter
 const eventEmitter = new Emitter()
 
 const cors = require('cors')
+const firebaseApp = require('./setup/firebase/firebase.setup')
+
+// Routes
 const call = require('./views/call/call.view.js')
+const auth = require('./views/auth/login.view')
+
+
+firebaseApp()
 
 app.set('eventEmitter', eventEmitter)
 app.use(cors())
+app.use(bodyparser())
+
+app.use('/auth', auth)
 app.use('/call', call)
 
 app.get('/', (req,res,next)=>{
     res.send('Working')
 })
+
+// not found route
+app.use(async (req, res, next)=>{
+    next(createErrors.NotFound())
+})
+
+// error handler
+app.use((err, req, res, next)=>{
+    res.status(err.status || 500)
+    res.send({
+        error: {
+            status: err.status || 500,
+            message: err.message
+        }
+    })
+})
+
 
 
 const server = app.listen((5000), ()=>{
