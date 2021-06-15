@@ -7,14 +7,12 @@ const Emitter = require('events')
 const eventEmitter = new Emitter()
 
 const cors = require('cors')
-const firebaseApp = require('./setup/firebase/firebase.setup')
+require('./setup/firebase/firebase.setup')
 
 // Routes
 const call = require('./views/call/call.view.js')
 const auth = require('./views/auth/auth.view.js')
 
-
-firebaseApp()
 
 app.set('eventEmitter', eventEmitter)
 app.use(cors())
@@ -75,6 +73,10 @@ io.on('connection', (socket)=>{
     socket.on('accepted-call-offer', (data)=>{
         console.log('Call Accepted', data)
         io.to(data.sender).emit('call-offer-accepted', data)
+
+        // join the room
+
+    
     })
 
     // emit rejected offer to sender
