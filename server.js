@@ -11,7 +11,7 @@ const firebaseApp = require('./setup/firebase/firebase.setup')
 
 // Routes
 const call = require('./views/call/call.view.js')
-const auth = require('./views/auth/login.view')
+const auth = require('./views/auth/auth.view.js')
 
 
 firebaseApp()
