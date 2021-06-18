@@ -44,9 +44,9 @@ app.use((err, req, res, next)=>{
     })
 })
 
-const POST = process.env.PORT || 5000
+const PORT = process.env.PORT || 5000
 
-const server = app.listen((5000), ()=>{
+const server = app.listen((PORT), ()=>{
     console.log('Server Running at port 5000')
 })
 
