@@ -2,7 +2,7 @@ const express = require('express')
 const call = express.Router()
 const createError = require('http-errors')
 const { db } = require("../../setup/firebase/firebase.setup")
-const { v4: uuid4 } = require('uuid')
+const { uuid } = require('uuidv4');
 //const { verifyAccessToken } = require('../../controller/auth/auth.controller')
 
 
@@ -17,17 +17,22 @@ call.post('/calloffer', (req, res, next) => {
     try{
         let { sender, receiver } = req.body
 
+        console.log("Sender Peer id ", sender)
+
         if(!sender || !receiver) throw createError.BadRequest('Bad Request')
 
         console.log('Call Service in Action')
 
         // global event emitter
         const eventEmitter = req.app.get('eventEmitter')
-
-        // emit an event to make a call offer
-        eventEmitter.emit('send-call-offer', {sender: sender, receiver: receiver, roomId: uuidV4() })
-
-        res.send(true)
+        const roomId = uuid()
+        eventEmitter.emit('send-call-offer', {roomId: roomId, sender: sender, receiver: receiver})
+        
+        res.send({
+            roomId,
+            sender,
+            receiver
+        }) 
 
     } catch(error){
         next(error)
