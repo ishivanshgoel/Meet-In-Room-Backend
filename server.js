@@ -62,61 +62,23 @@ app.use('/peerjs', peerServer);
 
 const io = require('socket.io')(server, {
 
-    // io.sockets.adapter.rooms to get all the rooms
-
     cors: {
       origin: '*',
     }
 })
 
-let socketGlobal
-
 io.on('connection', (socket)=>{
 
-    socketGlobal=socket
-
     // join the user
-    socket.on('join', (userid)=>{
-        console.log('User Joining id: ', userid)
-        socket.join(userid)
-    })
-
-
-    // emit accepted offer to sender
-    socket.on('accepted-call-offer', (data)=>{
-        console.log('Call Accepted', data)
-        io.to(data.sender).emit('call-offer-accepted', data)
-        // io.to(data.roomId).broadcast.emit('user-connected', data.receiver)
-    })
-
-    // emit rejected offer to sender
-    socket.on('rejected-call-offer', (data)=>{
-        console.log('Rejected Call ', data)
-        io.to(data.sender).emit('call-offer-rejected', data)
-    })
-
-    // joining room
-    socket.on('join-room', (roomId, userId) => {
-        console.log("Room Joined ", roomId)
-        console.log("Room joined by user ", userId)
+    socket.on('join-room', ({roomId, userId})=>{
+        console.log('room id ', roomId)
         socket.join(roomId)
-        socket.to(roomId).broadcast.emit('user-connected', userId)
-    
+        socket.broadcast.to(roomId).emit('new-user-connect', userId)
         socket.on('disconnect', () => {
-          socket.to(roomId).broadcast.emit('user-disconnected', userId)
-        })
+            console.log("User Disconnected ", userId)
+            socket.broadcast.to(roomId).emit('user-disconnected', userId)
+        });
     })
 
 })
-
-/////////////// event listners ////////////////////
-eventEmitter.on('send-call-offer', (data)=>{
-    // socketGlobal.join(data.roomId)
-    // emitting event to reciever
-    // console.log(data)
-    io.to(data.receiver).emit('receive-call-offer', data)
-
-})
-
-
 
