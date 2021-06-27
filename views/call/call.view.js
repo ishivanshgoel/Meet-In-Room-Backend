@@ -145,6 +145,10 @@ call.post('/createroom', async (req, res, next) => {
         }
 
         let roomId = uuid()
+        let newRoomData = {
+            name,
+            roomId
+        }
 
         // add to meetingRooms collection
         db.collection('meetingRooms').doc(roomId).set(newRoom).then(() => {
@@ -155,21 +159,21 @@ call.post('/createroom', async (req, res, next) => {
                 if (!userData.meetingRooms) {
                     userData = {
                         ...userData,
-                        meetingRooms: [roomId]
+                        meetingRooms: [newRoomData]
                     }
                 } else {
                     userData = {
                         ...userData,
                         meetingRooms: [
                             ...userData.meetingRooms,
-                            roomId
+                            newRoomData
                         ]
                     }
                 }
                 db.collection("users").doc(myId)
                     .set(userData)
                     .then(() => {
-                        res.send(newRoom)
+                        res.send(newRoomData)
                     }).catch((err) => {
                         next(err)
                     })
