@@ -39,10 +39,10 @@ auth.post("/register", async (req, res, next) => {
 
     try {
 
-        const { email, password } = req.body;
+        const { name, email, password } = req.body;
 
         // validating request 
-        if (!email || !password) throw createError.BadRequest('Bad Request')
+        if (!name || !email || !password) throw createError.BadRequest('Bad Request')
 
         // attempt to create user account with given email and password
         firebaseauth.createUserWithEmailAndPassword(email, password)
@@ -51,7 +51,8 @@ auth.post("/register", async (req, res, next) => {
                 
                 //save uid and users email to users collection in firestore
                 await db.collection('users').doc(uid).set({
-                    email: email
+                    email: email,
+                    name: name
                 });
 
                 
