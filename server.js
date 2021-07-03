@@ -72,17 +72,20 @@ const io = require('socket.io')(server, {
 io.on('connection', (socket)=>{
 
     // join the user
-    socket.on('join-room', ({roomId, userId})=>{
+    socket.on('join-room', ({roomId, userId, userEmail})=>{
         console.log('room id ', roomId)
+        console.log('user id ', userId)
+        console.log('email id ', userEmail)
         socket.join(roomId)
-        socket.broadcast.to(roomId).emit('new-user-connect', userId)
+
+        socket.broadcast.to(roomId).emit('new-user-connect', {userId, userEmail})
         socket.on('send-message', ({ from, message})=>{
             console.log("Message ", message)
             socket.broadcast.to(roomId).emit('new-message', {from, message})
         })
         socket.on('disconnect', () => {
             console.log("User Disconnected ", userId)
-            socket.broadcast.to(roomId).emit('user-disconnected', userId)
+            socket.broadcast.to(roomId).emit('user-disconnected', {userId, userEmail})
         });
     })
 
