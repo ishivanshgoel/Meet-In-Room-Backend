@@ -17,11 +17,7 @@ call.post('/calloffer', (req, res, next) => {
     try {
         let { sender, receiver } = req.body
 
-        console.log("Sender Peer id ", sender)
-
         if (!sender || !receiver) throw createError.BadRequest('Bad Request')
-
-        console.log('Call Service in Action')
 
         // global event emitter
         const eventEmitter = req.app.get('eventEmitter')

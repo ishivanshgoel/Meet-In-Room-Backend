@@ -13,6 +13,7 @@ require('./setup/firebase/firebase.setup')
 
 // Routes
 const call = require('./views/call/call.view.js')
+const chat = require('./views/chat/chat.auth.js')
 const work = require('./views/work/work.view.js')
 const auth = require('./views/auth/auth.view.js')
 
@@ -24,6 +25,7 @@ app.use(bodyparser())
 app.use('/auth', auth)
 app.use('/call', call)
 app.use('/work', work)
+app.use('/chat', chat)
 
 app.get('/', (req,res,next)=>{
     res.send('Working')
@@ -76,13 +78,21 @@ io.on('connection', (socket)=>{
         console.log('room id ', roomId)
         console.log('user id ', userId)
         console.log('email id ', userEmail)
+
+        // join the room
         socket.join(roomId)
 
+        // whenever a new user joins 
+        // broadcast it to all the other users
         socket.broadcast.to(roomId).emit('new-user-connect', {userId, userEmail})
+
+        // for realtime message sending
         socket.on('send-message', ({ from, message})=>{
             console.log("Message ", message)
             socket.broadcast.to(roomId).emit('new-message', {from, message})
         })
+
+        // when user gets disconnect
         socket.on('disconnect', () => {
             console.log("User Disconnected ", userId)
             socket.broadcast.to(roomId).emit('user-disconnected', {userId, userEmail})
@@ -90,4 +100,3 @@ io.on('connection', (socket)=>{
     })
 
 })
-
