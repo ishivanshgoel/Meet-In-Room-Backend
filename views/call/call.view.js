@@ -143,7 +143,8 @@ call.post('/createroom', async (req, res, next) => {
         let roomId = uuid()
         let newRoomData = {
             name,
-            roomId
+            roomId,
+            type: 'owner'
         }
 
         // add to meetingRooms collection
