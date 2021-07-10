@@ -1,5 +1,4 @@
 //auth middleware
-const JWT = require('jsonwebtoken')
 const createError = require('http-errors')
 
 /**
@@ -16,7 +15,7 @@ module.exports = {
             const secret = 'some super secret'
             const options = {
                 expiresIn : '1d',
-                issuer: "paradox2021",
+                issuer: "meetInRoom",
                 audience: userId
             }
             JWT.sign(payload, secret, options, (err, token) => {
