@@ -64,8 +64,7 @@ call.post('/addinroom', async (req, res, next) => {
         db.collection('meetingRooms').doc(roomId).get().then(async (data) => {
             console.log(data.data())
             let meetingRoom = await data.data()
-
-            // allow only if the current user in owner of meetingRoom
+            // allow only if the current user is owner of meetingRoom
             if (meetingRoom.owner === myId) {
                 // add member in a room
                 meetingRoom.members = [
@@ -86,14 +85,14 @@ call.post('/addinroom', async (req, res, next) => {
                             if (!userData.meetingRooms) {
                                 userData = {
                                     ...userData,
-                                    meetingRooms: [roomId]
+                                    meetingRooms: [{roomId, name: meetingRoom.name}]
                                 }
                             } else {
                                 userData = {
                                     ...userData,
                                     meetingRooms: [
                                         ...userData.meetingRooms,
-                                        roomId
+                                        {roomId, name: meetingRoom.name}
                                     ]
                                 }
                             }
