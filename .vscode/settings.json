@@ -1,4 +1,0 @@
-{
-    "appService.defaultWebAppToDeploy": "/subscriptions/66e977f7-0bbc-4250-ab5f-a3fdb3feee8a/resourceGroups/meetinroom/providers/Microsoft.Web/sites/meetinroom",
-    "appService.deploySubpath": "."
-}
