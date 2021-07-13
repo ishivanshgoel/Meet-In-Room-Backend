@@ -21,3 +21,20 @@ The features are focused to setup a hassle free workflow in an organisation. The
 -  Firestore - As a database 
 -  WebRTC
 -  PeerJS
+
+## Frontend
+- [Meet-In-Room-Frontend](https://github.com/ishivanshgoel/Meet-In-Room-Frontend.git)
+- [Hosted on Firebase](https://teams-fecd7.web.app/)
+
+## Backend
+- [Meet-In-Room-Backend](https://github.com/ishivanshgoel/Meet-In-Room-Backend.git)
+- [Hosted on Microsoft Azure](https://meetinroom.azurewebsites.net/)
+
+## Demo
+- [Click here to view Video Demo](https://drive.google.com/file/d/1sQOccGuxLi1WEZ4o_0aGdKwnzUgMKCQd/view?usp=sharing)
+- [Click here to view PPT](https://docs.google.com/presentation/d/1yqANeB6di1Xq7yy6h-aVU1RS15hPWlC7_jKBZ1YS8fs/edit?usp=sharing)
+
+
+For Detailed Information please refer [Documentation](https://github.com/ishivanshgoel/Meet-In-Room-Frontend/blob/master/README.md)
+
+
